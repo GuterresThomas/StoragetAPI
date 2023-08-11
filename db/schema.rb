@@ -10,7 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_09_193808) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_11_202932) do
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "sale_id", null: false
+    t.decimal "amount_paid"
+    t.string "payment_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_payments_on_sale_id"
+  end
+
+  create_table "sale_items", force: :cascade do |t|
+    t.integer "sale_id", null: false
+    t.integer "storage_item_id", null: false
+    t.integer "quantity"
+    t.decimal "unit_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_sale_items_on_sale_id"
+    t.index ["storage_item_id"], name: "index_sale_items_on_storage_item_id"
+  end
+
+  create_table "sales", force: :cascade do |t|
+    t.datetime "date"
+    t.integer "customer_id", null: false
+    t.decimal "total_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_sales_on_customer_id"
+  end
+
   create_table "storages", force: :cascade do |t|
     t.string "name"
     t.integer "quantity"
@@ -20,4 +56,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_193808) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "payments", "sales"
+  add_foreign_key "sale_items", "sales"
+  add_foreign_key "sale_items", "storage_items"
+  add_foreign_key "sales", "customers"
 end
