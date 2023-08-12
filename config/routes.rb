@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :storages, only: [:index, :create, :destroy]
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :sales, only: [:index, :create, :show, :update, :destroy]
+  resources :sale_items, only: [:index, :create, :show, :update, :destroy]
+  resources :customers, only: [:index, :create, :show, :update, :destroy]
+  resources :payments, only: [:index, :create, :show, :update, :destroy]
 end
